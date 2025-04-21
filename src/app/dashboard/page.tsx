@@ -5,7 +5,6 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow
@@ -15,7 +14,7 @@ import Link from 'next/link'
 
 export default function Dashboard() {
   return (
-    <main className='mx-auto my-12 flex h-full max-w-5xl flex-col justify-center gap-6 text-center'>
+    <main className='mx-auto my-12 flex h-full w-5xl flex-col justify-center gap-6 text-center'>
       <div className='flex justify-between'>
         <h1 className='text-3xl font-bold'>Invoices</h1>
         <p>
@@ -58,12 +57,6 @@ export default function Dashboard() {
             </TableCell>
           </TableRow>
         </TableBody>
-        {/* <TableFooter>
-          <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
-            <TableCell className='flex w-full text-right'>$250.00</TableCell>
-          </TableRow>
-        </TableFooter> */}
       </Table>
     </main>
   )
