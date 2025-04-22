@@ -1,5 +1,3 @@
-'use client'
-
 import Container from '@/components/Container'
 import React from 'react'
 import Form from 'next/form'
@@ -7,9 +5,7 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import SubmitButton from '@/components/SubmitButton'
-
-import { sql } from 'drizzle-orm'
-import { db } from '@/db'
+import { createAction } from '@/app/actions'
 
 export default function NewInvoicePage() {
   return (
@@ -19,7 +15,7 @@ export default function NewInvoicePage() {
           <h1 className='text-3xl font-semibold'>Create Invoice</h1>
         </div>
 
-        <Form action='' onSubmit={() => {}} className='grid max-w-xs gap-4'>
+        <Form action={createAction} className='grid max-w-xs gap-4'>
           <div>
             <Label htmlFor='name' className='mb-2 block text-sm font-semibold'>
               Billing Name

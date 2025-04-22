@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { Pool } from 'pg'
-import { Customers, Invoices } from './schema'
+import { Invoices } from './schema'
 
 const pool = new Pool({
   connectionString: process.env.XATA_DATABASE_URL,
@@ -8,7 +8,6 @@ const pool = new Pool({
 })
 export const db = drizzle(pool, {
   schema: {
-    Invoices,
-    Customers
+    Invoices
   }
 })
