@@ -1,5 +1,8 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { CirclePlus } from 'lucide-react'
+import { db } from '@/db'
+import { Invoices } from '@/db/schema'
 import {
   Table,
   TableBody,
@@ -9,10 +12,13 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { CirclePlus } from 'lucide-react'
-import Link from 'next/link'
 
-export default function Dashboard() {
+import Link from 'next/link'
+import { cn } from '@/lib/utils'
+
+export default async function Dashboard() {
+  const results = await db.select().from(Invoices)
+
   return (
     <main className='mx-auto my-12 flex h-full w-5xl flex-col justify-center gap-6 text-center'>
       <div className='flex justify-between'>
@@ -39,23 +45,59 @@ export default function Dashboard() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className='py-4 text-left font-medium'>
-              <span className='font-semibold'>31/10/2024</span>
-            </TableCell>
-            <TableCell className='py-4 text-left'>
-              <span className='font-semibold'>Phillip J. Fry</span>
-            </TableCell>
-            <TableCell className='py-4 text-left'>
-              <span className=''>pjfry@gmail.com</span>
-            </TableCell>
-            <TableCell className='py-4 text-center'>
-              <Badge className='rounded-full'>Open</Badge>
-            </TableCell>
-            <TableCell className='py-4 text-right'>
-              <span className='font-semibold'>£250.00</span>
-            </TableCell>
-          </TableRow>
+          {results.map(result => {
+            return (
+              <TableRow key={result.id}>
+                <TableCell className='p-0 text-left font-medium'>
+                  <Link
+                    href={`/invoices/${result.id}`}
+                    className='block py-4 font-semibold'
+                  >
+                    {new Date(result.createTs).toLocaleDateString('en-GB')}
+                  </Link>
+                </TableCell>
+                <TableCell className='p-0 text-left'>
+                  <Link
+                    href={`/invoices/${result.id}`}
+                    className='block py-4 font-semibold'
+                  >
+                    Phillip J. Fry
+                  </Link>
+                </TableCell>
+                <TableCell className='p-0 text-left'>
+                  <Link href={`/invoices/${result.id}`} className='block py-4'>
+                    pjfry@gmail.com
+                  </Link>
+                </TableCell>
+                <TableCell className='p-0 text-center'>
+                  <Link
+                    href={`/invoices/${result.id}`}
+                    className='block justify-center py-4'
+                  >
+                    <Badge
+                      className={cn(
+                        'rounded-full capitalize',
+                        result.status === 'open' && 'bg-blue-500',
+                        result.status === 'paid' && 'bg-green-600',
+                        result.status === 'void' && 'bg-zinc-700',
+                        result.status === 'uncollectible' && 'bg-red-600'
+                      )}
+                    >
+                      {result.status}
+                    </Badge>
+                  </Link>
+                </TableCell>
+                <TableCell className='p-0 text-right'>
+                  <Link
+                    href={`/invoices/${result.id}`}
+                    className='py-4 font-semibold'
+                  >
+                    £{(result.value / 100).toFixed(2)}
+                  </Link>
+                </TableCell>
+              </TableRow>
+            )
+          })}
         </TableBody>
       </Table>
     </main>

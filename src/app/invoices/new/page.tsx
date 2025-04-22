@@ -1,5 +1,7 @@
+'use client'
+
 import Container from '@/components/Container'
-import React from 'react'
+import React, { SyntheticEvent, useState } from 'react'
 import Form from 'next/form'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
@@ -8,6 +10,21 @@ import SubmitButton from '@/components/SubmitButton'
 import { createAction } from '@/app/actions'
 
 export default function NewInvoicePage() {
+  const [state, setState] = useState('ready')
+  const [error, setError] = useState<string>()
+
+  async function handleOnSubmit(event: SyntheticEvent) {
+    // Submission disabled for demo
+    // event.preventDefault();
+    // setError('Submission disabled for demo.');
+    // return;
+
+    if (state === 'pending') {
+      event.preventDefault()
+      return
+    }
+    setState('pending')
+  }
   return (
     <div className='mt-12 h-full'>
       <Container>
@@ -15,7 +32,11 @@ export default function NewInvoicePage() {
           <h1 className='text-3xl font-semibold'>Create Invoice</h1>
         </div>
 
-        <Form action={createAction} className='grid max-w-xs gap-4'>
+        <Form
+          action={createAction}
+          onSubmit={handleOnSubmit}
+          className='grid max-w-xs gap-4'
+        >
           <div>
             <Label htmlFor='name' className='mb-2 block text-sm font-semibold'>
               Billing Name

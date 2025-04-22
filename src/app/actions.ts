@@ -1,5 +1,6 @@
 'use server'
 
+import { redirect } from 'next/navigation'
 import { db } from '@/db'
 import { Invoices } from '@/db/schema'
 
@@ -8,8 +9,6 @@ export async function createAction(formData: FormData) {
     Number.parseFloat(String(formData.get('value'))) * 100
   )
   const description = formData.get('description') as string
-  const name = formData.get('name') as string
-  const email = formData.get('email') as string
 
   const results = await db
     .insert(Invoices)
@@ -21,4 +20,6 @@ export async function createAction(formData: FormData) {
     .returning({
       id: Invoices.id
     })
+
+  redirect(`/invoices/${results[0].id}`)
 }
